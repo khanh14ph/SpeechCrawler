@@ -15,6 +15,7 @@ def extract_audio_part_segment(movie_file, timing_start, timing_end, res_filenam
                         "-ss", "{:02d}:{:02d}:{:02d}.{:03d}".format(start_h, start_m, start_s, start_msec),
                         "-to", "{:02d}:{:02d}:{:02d}.{:03d}".format(end_h, end_m, end_s, end_msec),  res_filename],
                         stdout=DEVNULL, stderr=DEVNULL)
+    print("CHECKCKK: ",os.path.exists(res_filename))
     out, err = p.communicate()
     p.terminate()
     return None
