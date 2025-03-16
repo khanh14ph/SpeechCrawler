@@ -1,5 +1,5 @@
 import re
-from crawler.youtube_helpers import remove_overlapping_subtitles, \
+from youtube_helpers import remove_overlapping_subtitles, \
     normalize_subtitle, leave_alphanum_characters, merge_subtitles, _get_transcript_google_web_asr
 import random
 from Levenshtein import ratio
@@ -157,24 +157,24 @@ class GoogleRandomSubsetWERFilter(BaseFilter):
         return input
 
 if __name__ == "__main__":
-    from crawler.youtube_helpers import load_all_subtitles
-    subtitles = load_all_subtitles("./../video/2oNoBDMGGioHow_to_Make_a_Picnic_Table_-_Plans_and_Instructions.en.vtt")
+    from youtube_helpers import load_all_subtitles
+    subtitles = load_all_subtitles("/home4/khanhnd/youtube_crawler/KTSpeechCrawler/intermediate/4FqTsCB_w80Vietsub_Cut_V_ng_Tu_n_Kh_i_-_Hoan_thanh_n_u_mi_-_Livesteam_14_6_2017.vi.srt","srt")
     print(len(subtitles))
     input = {
         'subtitles' : subtitles,
         'video_file' : ''
     }
-    good_chars_regexp = re.compile(r"^[A-Za-z0-9\,\.\-\?\"\'\’\!\“\s\;\:\“\”\–\‘\’\’\/\\]+$", re.IGNORECASE)
+    good_chars_regexp = re.compile(r"[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]+$/", re.IGNORECASE)
     pipeline = Pipeline([
         OverlappingSubtitlesRemover(),
         SubtitleCaptionTextFilter(),
         CaptionNormalizer(),
-        CaptionRegexMatcher(good_chars_regexp),
+        # CaptionRegexMatcher(good_chars_regexp),
         CaptionLengthFilter(min_length=5),
-        CaptionLeaveOnlyAlphaNumCharacters(),
+        # CaptionLeaveOnlyAlphaNumCharacters(),
         SubtitleMerger(max_len_merged_sec=10),
         CaptionDurationFilter(min_length=1, max_length=20.0)
-    ])
+        ])
     processed_subtitles = pipeline(input)
     print(len(processed_subtitles['subtitles']))
     for s in processed_subtitles['subtitles']:

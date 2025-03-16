@@ -5,3 +5,4 @@ flask
 youtube-dl
 python-Levenshtein
 SpeechRecognition 
+numpy
