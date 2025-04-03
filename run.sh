@@ -3,18 +3,19 @@
 # Base directory
 BASE_DIR="/Users/khanh/dev/SpeechCrawler"
 LANGUAGE="vi"
-if [ ! -d "downloaded_audio" ]; then
-    mkdir -p downloaded_audio
+DATABASE="/Users/khanh/dev/crawler/database"
+if [ ! -d $DATABASE/downloaded_audio ]; then
+    mkdir -p $DATABASE/downloaded_audio
     echo "Directory 'downloaded_audio' created successfully."
 else
     echo "Directory 'downloaded_audio' already exists."
 fi
 
-if [ ! -d "downloaded_subtitle" ]; then
-    mkdir -p downloaded_subtitle
-    echo "Directory 'downloaded_subtitle' created successfully."
+if [ ! -d $DATABASE/downloaded_subtitle ]; then
+    mkdir -p $DATABASE/downloaded_subtitle
+    echo "Directory $DATABASE/downloaded_subtitle' created successfully."
 else
-    echo "Directory 'downloaded_subtitle' already exists."
+    echo "Directory $DATABASE/downloaded_subtitle' already exists."
 fi
 
 if [ ! -d "crawled" ]; then
@@ -24,12 +25,20 @@ else
     echo "Directory 'crawled' already exists."
 fi
 
-if [ ! -d ${BASE_DIR}/crawled/${LANGUAGE} ]; then
-    mkdir -p ${BASE_DIR}/crawled/${LANGUAGE}
-    echo "Directory crawled/${LANGUAGE} created successfully."
+if [ ! -d $DATABASE/downloaded_audio/$LANGUAGE ]; then
+    mkdir -p $DATABASE/downloaded_audio/$LANGUAGE
+    echo "Directory $DATABASE/downloaded_audio/$LANGUAGE created successfully."
 else
-    echo "Directory crawled/${LANGUAGE} already exists."
+    echo "Directory $DATABASE/downloaded_audio/$LANGUAGE already exists."
 fi
+
+if [ ! -d $DATABASE/downloaded_subtitle/$LANGUAGE ]; then
+    mkdir -p $DATABASE/downloaded_subtitle/$LANGUAGE
+    echo "Directory $DATABASE/downdownloaded_subtitleloaded_audio/$LANGUAGE created successfully."
+else
+    echo "Directory $DATABASE/downloaded_subtitle/$LANGUAGE already exists."
+fi
+
 # Define language as a variable
 
 
@@ -41,7 +50,7 @@ for i in $(seq 1 21); do
   echo "Processing file ${i}..."
   
   # Run the get_link.py script
-  python ${BASE_DIR}/get_link.py ${BASE_DIR}/name_lst/${i}.txt --language ${LANGUAGE}
+  python ${BASE_DIR}/get_link.py ${BASE_DIR}/name_lst/${i}.txt --language ${LANGUAGE} --download_subtitle_folder $DATABASE/downloaded_subtitle
   
   # Concatenate the resulting files
   cat links/link_list0.txt links/link_list1.txt links/link_list2.txt links/link_list3.txt links/link_list4.txt links/link_list5.txt > ${BASE_DIR}/crawled/${LANGUAGE}/${i}.txt
@@ -56,7 +65,7 @@ for i in $(seq 1 21); do
   
   # Process URLs if the file is not empty
   while read url; do
-    yt-dlp -x --audio-format wav --postprocessor-args "-ac 1 -ar 16000" -o "downloaded_audio/%(id)s.%(ext)s" "$url"
+    yt-dlp -x --audio-format wav --postprocessor-args "-ac 1 -ar 16000" -o "$DATABASE/downloaded_audio/$LANGUAGE/%(id)s.%(ext)s" "$url"
   done < urls.txt
   
   echo "Completed processing file ${i}"
