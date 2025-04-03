@@ -17,7 +17,7 @@ for i in $(seq 1 21); do
   python ${BASE_DIR}/get_link.py ${BASE_DIR}/name_lst/${i}.txt --language vi
   
   # Concatenate the resulting files
-  cat link_list0.txt link_list1.txt link_list2.txt link_list3.txt link_list4.txt link_list5.txt > ${BASE_DIR}/crawled/${LANGUAGE}/${i}.txt
+  cat links/link_list0.txt links/link_list1.txt links/link_list2.txt links/link_list3.txt links/link_list4.txt links/link_list5.txt > ${BASE_DIR}/crawled/${LANGUAGE}/${i}.txt
   
   python to_url.py ${BASE_DIR}/crawled/${LANGUAGE}/${i}.txt
   while read url; do

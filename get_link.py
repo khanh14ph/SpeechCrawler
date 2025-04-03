@@ -7,7 +7,7 @@ from youtube_transcript_api import YouTubeTranscriptApi
 from multiprocessing import Process
 
 def get_url(v, name_file, downloaded_file, language):
-    with open(f"link_list{v}.txt", "w") as f:
+    with open(f"links/link_list{v}.txt", "w") as f:
         pass
     
     # Read names from the specified file
