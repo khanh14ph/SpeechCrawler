@@ -1,0 +1,50 @@
+Bệnh nội tiết
+Rối loạn nội tiết
+Tiểu đường
+Đái tháo đường type 1
+Đái tháo đường type 2
+Cường giáp
+Suy giáp
+Bướu cổ
+Bệnh Basedow
+Bệnh Addison
+Bệnh Cushing
+Rối loạn chuyển hóa
+Tăng cholesterol máu
+Tăng triglyceride máu
+Bệnh gút
+Tăng axit uric máu
+Bệnh béo phì
+Suy dinh dưỡng
+Thiếu vitamin D
+Thiếu vitamin A
+Thiếu vitamin B12
+Thiếu vitamin C
+Thiếu canxi
+Thiếu kẽm
+Thiếu sắt
+Rối loạn hormone
+Bệnh tuyến yên
+Hội chứng buồng trứng đa nang
+Bệnh tuyến thượng thận
+Bệnh tuyến giáp
+Bệnh cường tuyến cận giáp
+Bệnh suy tuyến cận giáp
+Bệnh thiếu hormone tăng trưởng
+Bệnh kháng insulin
+Hội chứng chuyển hóa
+Bệnh loãng xương
+Bệnh hạ đường huyết
+Bệnh tăng đường huyết
+Bệnh tăng huyết áp do nội tiết
+Rối loạn lipid máu
+Bệnh Wilson (rối loạn chuyển hóa đồng)
+Bệnh galactosemia
+Bệnh phenylketonuria
+Bệnh tăng sản tuyến thượng thận bẩm sinh
+Bệnh rối loạn chuyển hóa bẩm sinh
+Bệnh tăng tiết hormone tuyến yên
+Bệnh suy tuyến yên
+Bệnh tăng tiết hormone tuyến giáp
+Bệnh suy thận do nội tiết
+Rối loạn chuyển hóa protein
