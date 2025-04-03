@@ -79,11 +79,11 @@ def get_url(v, name_file, downloaded_file, language):
             if t in all_lst:
                 print(t)
             if t not in all_lst:
-                all_lst.append(t)
-                link = f"https://www.youtube.com/watch?v={t}"
-                with open(f"links/link_list{v}.txt", "a") as f:
-                    f.write(f"{link}\t{sub_dur}\t{dur}\n")
-                with open(f"downloaded_subtitle/{t}.jsonl","w",encoding="utf-8") as f:
+                # all_lst.append(t)
+                # link = f"https://www.youtube.com/watch?v={t}"
+                # with open(f"links/link_list{v}.txt", "a") as f:
+                #     f.write(f"{link}\t{sub_dur}\t{dur}\n")
+                with open(f"downloaded_subtitle/{language}{t}.jsonl","w",encoding="utf-8") as f:
                     for meta in meta_lst:
                         f.write(json.dumps(meta, ensure_ascii=False) + "\n")
                 print(f"Downloaded {t}")
@@ -109,6 +109,9 @@ if __name__ == "__main__":
                         help="Path to the file tracking downloaded videos")
     parser.add_argument("--language", 
                         default="vi", 
+                        help="Language code for transcripts (default: vi)")
+    parser.add_argument("--download_subtitle_folder", 
+                        default="../downloaded_subtitle", 
                         help="Language code for transcripts (default: vi)")
     
     # Parse arguments
