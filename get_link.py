@@ -2,37 +2,35 @@ import requests
 import re
 import os
 import tqdm
-import random
+import argparse
 from youtube_transcript_api import YouTubeTranscriptApi
-
-
 from multiprocessing import Process
 
-# /home3/cuongld/asr-training/data/vocab/word_list_miss_indomain.txt
-def get_url(v):
-    with open("link_list" + str(v) + ".txt", "w") as f:
+def get_url(v, name_file, downloaded_file, language):
+    with open(f"link_list{v}.txt", "w") as f:
         pass
-    with open(
-        "/home4/khanhnd/youtube_crawler/KTSpeechCrawler/name.txt", "r"
-    ) as f:
+    
+    # Read names from the specified file
+    with open(name_file, "r") as f:
         lst = f.readlines()
     lst = [i.strip() for i in lst]
     length = len(lst)
     lst = lst[int(v * length / 6) : int((v + 1) * length / 6)]
+    
     regex = r"(?<=watch\?v=)[\w]+(?=\")"
-    with open("/home4/khanhnd/youtube_crawler/KTSpeechCrawler/vi-downloaded.txt", "r") as f:
-        all = f.readlines()
-        all = [i.strip().split()[-1] for i in all]
+    
+    # Read downloaded videos from the specified file
+    with open(downloaded_file, "r") as f:
+        all_lst = f.readlines()
+        all_lst = [i.strip().split()[-1] for i in all_lst]
+    
     for j in tqdm.tqdm(lst):
         print("searching for ", j)
         match_all = []
-        for i in range(0, 30):  # search first n pages
-
+        for i in range(0, 20):  # search first n pages
             URL = (
-                "https://www.youtube.com/results?search_query="
-                + j
-                + "&sp=EgQQASgB&page="
-                + str(i)
+                f"https://www.youtube.com/results?search_query={j}"
+                "&sp=EgQQASgB&page=" + str(i)
             )
             page = requests.get(URL)
             a = page.text
@@ -41,77 +39,68 @@ def get_url(v):
             match_all += match
 
         match_all = list(set(match_all))
-
         match_all_real = []
+        duration_lst = []
+        sub_duration_lst = []
         for u in match_all:
-            if u not in all:
+            if u not in all_lst:
                 try:
+                    sub_dur = 0
                     transcript_list = YouTubeTranscriptApi.list_transcripts(u)
-
-                    transcript = transcript_list.find_manually_created_transcript(
-                        ["vi"]
-                    )
+                    
+                    # Use the language parameter passed to the function
+                    transcript = transcript_list.find_manually_created_transcript([language])
+                    
                     e = transcript.fetch()
+                    for v in e:
+                        sub_dur = sub_dur + v["duration"]
+                    sub_duration_lst.append(sub_dur)
                     if len(e) > 10:
+                        duration_lst.append(e[-1]["start"])
                         match_all_real.append(u)
                     else:
                         pass
 
-                except Exception:
+                except Exception as ex:
                     pass
 
         print("number of vid found: ", len(match_all_real))
-        print("len", len(match_all_real))
-        if len(match_all_real) >= 30:
-            l = random.sample(match_all_real, 30)
-        else:
-            print("NOT_ENOUGH")
-            l = match_all_real
-        for t in l:
-            if t in all:
+
+        for t, dur, sub_dur in zip(match_all_real, duration_lst, sub_duration_lst):
+            if t in all_lst:
                 print(t)
-            if t not in all:
-                all.append(t)
+            if t not in all_lst:
+                all_lst.append(t)
                 print("get")
-                link = "https://www.youtube.com/watch?v=" + t
-                with open("link_list" + str(v) + ".txt", "a") as f:
-                    f.write(link + "\n")
+                link = f"https://www.youtube.com/watch?v={t}"
+                with open(f"link_list{v}.txt", "a") as f:
+                    f.write(f"{link}\t{sub_dur}\t{dur}\n")
 
+def main(name_file, downloaded_file, language):
+    processes = []
+    for i in range(6):
+        p = Process(target=get_url, args=(i, name_file, downloaded_file, language))
+        p.start()
+        processes.append(p)
 
-# Create new threads
-def main():
-
-    p0 = Process(target=get_url, args=(0,))
-    p0.start()
-
-    p1 = Process(target=get_url, args=(1,))
-    p1.start()
-    # p1.join()
-
-    p2 = Process(target=get_url, args=(2,))
-    p2.start()
-    # p2.join()
-
-    p3 = Process(target=get_url, args=(3,))
-    p3.start()
-    # p3.join()
-
-    p4 = Process(target=get_url, args=(4,))
-    p4.start()
-
-    p5 = Process(target=get_url, args=(5,))
-    p5.start()
-
-    p0.join()
-    p1.join()
-    p2.join()
-    p3.join()
-    p4.join()
-    p5.join()
+    for p in processes:
+        p.join()
 
     print("finished main")
 
-
 if __name__ == "__main__":
+    # Set up argument parsing
+    parser = argparse.ArgumentParser(description="YouTube Crawler")
+    parser.add_argument("name_file", help="Path to the file containing names to search")
+    parser.add_argument("--downloaded", 
+                        default="/home4/khanhnd/youtube_crawler/SpeechCrawler/downloaded.txt", 
+                        help="Path to the file tracking downloaded videos")
+    parser.add_argument("--language", 
+                        default="vi", 
+                        help="Language code for transcripts (default: vi)")
+    
+    # Parse arguments
+    args = parser.parse_args()
 
-    main()
+    # Call main with parsed arguments
+    main(args.name_file, args.downloaded, args.language)
