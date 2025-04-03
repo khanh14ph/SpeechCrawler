@@ -1,14 +1,26 @@
 #!/bin/bash
 
 # Base directory
-BASE_DIR="/Users/khanh/dev/SpeechCrawler"
+BASE_DIR="/Users/khanh/dev/crawler/SpeechCrawler"
 LANGUAGE="vi"
 DATABASE="/Users/khanh/dev/crawler/database"
+if [ ! -d $DATABASE ]; then
+    mkdir -p $DATABASE
+    echo "Directory $DATABASE created successfully."
+else
+    echo "Directory $DATABASE already exists."
+fi
+if [ ! -d $BASE_DIR/links ]; then
+    mkdir -p $BASE_DIR/links
+    echo "Directory $BASE_DIR/links created successfully."
+else
+    echo "Directory $DATABASE/links already exists."
+fi
 if [ ! -d $DATABASE/downloaded_audio ]; then
     mkdir -p $DATABASE/downloaded_audio
-    echo "Directory 'downloaded_audio' created successfully."
+    echo "Directory $DATABASE/downloaded_audio created successfully."
 else
-    echo "Directory 'downloaded_audio' already exists."
+    echo "Directory $DATABASE/downloaded_audio already exists."
 fi
 
 if [ ! -d $DATABASE/downloaded_subtitle ]; then
