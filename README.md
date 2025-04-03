@@ -1,5 +1,12 @@
 # Speech-Crawler: Automatic Dataset Construction for Speech Recognition from YouTube Videos
-
+How to run:
+##
+Change the Language in run.sh to the language you want to download. 
+Put the keyword in name_lst folder, as I put
+```
+bash run.sh
+```
+##
 ```
 ## Citation
 

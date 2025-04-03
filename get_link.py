@@ -5,8 +5,10 @@ import tqdm
 import argparse
 from youtube_transcript_api import YouTubeTranscriptApi
 from multiprocessing import Process
-
+import json
 def get_url(v, name_file, downloaded_file, language):
+    ytt_api = YouTubeTranscriptApi(cookie_path='cookies.txt')
+
     with open(f"links/link_list{v}.txt", "w") as f:
         pass
     
@@ -41,39 +43,50 @@ def get_url(v, name_file, downloaded_file, language):
         match_all_real = []
         duration_lst = []
         sub_duration_lst = []
+        meta_lst_all=[]
         for u in match_all:
             if u not in all_lst:
-                # try:
-                    sub_dur = 0
-                    transcript_list = YouTubeTranscriptApi.list_transcripts(u)
                     
+                    transcript_list = ytt_api.list(u)
+                    if language in transcript_list._manually_created_transcripts:
+                        sub_dur = 0
                     # Use the language parameter passed to the function
-                    transcript = transcript_list.find_manually_created_transcript([language])
-                    print(u)
-                    e = transcript.fetch()
-                    for v in e:
-                        sub_dur = sub_dur + v.duration
-                    sub_duration_lst.append(sub_dur)
-                    print(len(e))
-                    if len(e) > 10:
-                        print(1)
-                        duration_lst.append(e[-1].start)
-                        match_all_real.append(u)
-                    else:
-                        pass
+                        transcript = transcript_list.find_manually_created_transcript([language])
+                        e = transcript.fetch()
+                        
+                        meta_lst=[]
+                        for snip in e.snippets:
+                            d=dict()
+                            d["text"]=snip.text
+                            d["start"]=snip.start
+                            d["duration"]=snip.duration
+                            sub_dur+= snip.duration
+                            meta_lst.append(d)
+                        
+
+                        if len(e) > 10:
+                            meta_lst_all.append(meta_lst)
+                            duration_lst.append(e.snippets[-1].start+e.snippets[-1].duration)
+
+                            match_all_real.append(u)
+                            sub_duration_lst.append(sub_dur)
+                        else:
+                            pass
 
 
 
-
-        for t, dur, sub_dur in zip(match_all_real, duration_lst, sub_duration_lst):
+        for t, dur, sub_dur,meta_lst in zip(match_all_real, duration_lst, sub_duration_lst,match_all_real):
             if t in all_lst:
                 print(t)
             if t not in all_lst:
                 all_lst.append(t)
-                print("get")
                 link = f"https://www.youtube.com/watch?v={t}"
-                with open(f"link_list{v}.txt", "a") as f:
+                with open(f"links/link_list{v}.txt", "a") as f:
                     f.write(f"{link}\t{sub_dur}\t{dur}\n")
+                with open(f"downloaded_subtitle/{t}.jsonl","w",encoding="utf-8") as f:
+                    for meta in meta_lst:
+                        f.write(json.dumps(meta, ensure_ascii=False) + "\n")
+                print(f"Downloaded {t}")
 
 def main(name_file, downloaded_file, language):
     processes = []
