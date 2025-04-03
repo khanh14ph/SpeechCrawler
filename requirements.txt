@@ -1,3 +1,4 @@
 termcolor
-youtube-dlp
+yt-dlp
 numpy
+youtube_transcript_api

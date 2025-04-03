@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Base directory
-BASE_DIR="/home4/khanhnd/youtube_crawler/SpeechCrawler"
+BASE_DIR="/Users/khanh/dev/SpeechCrawler"
 
 # Define language as a variable
 LANGUAGE="vi"

@@ -25,7 +25,6 @@ def get_url(v, name_file, downloaded_file, language):
         all_lst = [i.strip().split()[-1] for i in all_lst]
     
     for j in tqdm.tqdm(lst):
-        print("searching for ", j)
         match_all = []
         for i in range(0, 20):  # search first n pages
             URL = (
@@ -44,27 +43,27 @@ def get_url(v, name_file, downloaded_file, language):
         sub_duration_lst = []
         for u in match_all:
             if u not in all_lst:
-                try:
+                # try:
                     sub_dur = 0
                     transcript_list = YouTubeTranscriptApi.list_transcripts(u)
                     
                     # Use the language parameter passed to the function
                     transcript = transcript_list.find_manually_created_transcript([language])
-                    
+                    print(u)
                     e = transcript.fetch()
                     for v in e:
-                        sub_dur = sub_dur + v["duration"]
+                        sub_dur = sub_dur + v.duration
                     sub_duration_lst.append(sub_dur)
+                    print(len(e))
                     if len(e) > 10:
-                        duration_lst.append(e[-1]["start"])
+                        print(1)
+                        duration_lst.append(e[-1].start)
                         match_all_real.append(u)
                     else:
                         pass
 
-                except Exception as ex:
-                    pass
 
-        print("number of vid found: ", len(match_all_real))
+
 
         for t, dur, sub_dur in zip(match_all_real, duration_lst, sub_duration_lst):
             if t in all_lst:
@@ -93,7 +92,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="YouTube Crawler")
     parser.add_argument("name_file", help="Path to the file containing names to search")
     parser.add_argument("--downloaded", 
-                        default="/home4/khanhnd/youtube_crawler/SpeechCrawler/downloaded.txt", 
+                        default="downloaded.txt", 
                         help="Path to the file tracking downloaded videos")
     parser.add_argument("--language", 
                         default="vi", 
