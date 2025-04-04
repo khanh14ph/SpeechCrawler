@@ -73,6 +73,5 @@ for i in $(seq 1 21); do
   echo "Completed processing file ${i}"
 done
 
-python dur.py ${BASE_DIR}/crawled/${LANGUAGE}
 
 echo "All processing complete!"
