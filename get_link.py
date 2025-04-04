@@ -74,7 +74,7 @@ def get_url(v, name_file, downloaded_file, language,download_subtitle_folder,ind
 
 
 
-        for t, dur, sub_dur,meta_lst in zip(match_all_real, duration_lst, sub_duration_lst,match_all_real):
+        for t, dur, sub_dur,meta_data in zip(match_all_real, duration_lst, sub_duration_lst,meta_lst_all):
             if t in all_lst:
                 print(t)
             if t not in all_lst:
@@ -83,10 +83,10 @@ def get_url(v, name_file, downloaded_file, language,download_subtitle_folder,ind
                 with open(f"links/link_list{v}.txt", "a") as f:
                     f.write(f"{link}\n")
                 with open(f"{download_subtitle_folder}/{language}/{t}.jsonl","w",encoding="utf-8") as f:
-                    final_dict={"phrase_index":index,"subtitles":meta_lst}
+                    final_dict={"phrase_index":index,"id":t,"subtitles":meta_data}
                     json.dump(final_dict, f, indent=4,ensure_ascii=False)
 
-def main(name_file, downloaded_file, language,download_subtitle_folder):
+def main(name_file, downloaded_file, language,download_subtitle_folder,index):
     processes = []
     for i in range(6):
         p = Process(target=get_url, args=(i, name_file, downloaded_file, language,download_subtitle_folder,index))
