@@ -53,7 +53,7 @@ for i in $(seq 1 21); do
   echo "Processing file ${i}..."
   
   # Run the get_link.py script
-  python ${BASE_DIR}/get_link.py ${BASE_DIR}/name_lst/${i}.txt --language ${LANGUAGE} --download_subtitle_folder $DATABASE/downloaded_subtitle
+  python ${BASE_DIR}/get_link.py ${BASE_DIR}/name_lst/${i}.txt --language ${LANGUAGE} --download_subtitle_folder $DATABASE/downloaded_subtitle --index ${i}
   
   # Concatenate the resulting files
   cat links/link_list0.txt links/link_list1.txt links/link_list2.txt links/link_list3.txt links/link_list4.txt links/link_list5.txt > ${BASE_DIR}/urls.txt
