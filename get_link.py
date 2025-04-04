@@ -6,9 +6,8 @@ import argparse
 from youtube_transcript_api import YouTubeTranscriptApi
 from multiprocessing import Process
 import json
-def get_url(v, name_file, downloaded_file, language,download_subtitle_folder):
+def get_url(v, name_file, downloaded_file, language,download_subtitle_folder,index):
     ytt_api = YouTubeTranscriptApi(cookie_path='cookies.txt')
-
     with open(f"links/link_list{v}.txt", "w") as f:
         pass
     
@@ -83,15 +82,14 @@ def get_url(v, name_file, downloaded_file, language,download_subtitle_folder):
                 link = f"https://www.youtube.com/watch?v={t}"
                 with open(f"links/link_list{v}.txt", "a") as f:
                     f.write(f"{link}\n")
-                with open(f"{download_subtitle_folder}/{language}{t}.jsonl","w",encoding="utf-8") as f:
-                    for meta in meta_lst:
-                        f.write(json.dumps(meta, ensure_ascii=False) + "\n")
-                print(f"Downloaded {t}")
+                with open(f"{download_subtitle_folder}/{language}/{t}.jsonl","w",encoding="utf-8") as f:
+                    final_dict={"phrase_index":index,"subtitles":meta_lst}
+                    json.dump(final_dict, f, indent=4,ensure_ascii=False)
 
 def main(name_file, downloaded_file, language,download_subtitle_folder):
     processes = []
     for i in range(6):
-        p = Process(target=get_url, args=(i, name_file, downloaded_file, language,download_subtitle_folder))
+        p = Process(target=get_url, args=(i, name_file, downloaded_file, language,download_subtitle_folder,index))
         p.start()
         processes.append(p)
 
@@ -112,10 +110,13 @@ if __name__ == "__main__":
                         help="Language code for transcripts (default: vi)")
     parser.add_argument("--download_subtitle_folder", 
                         default="../downloaded_subtitle", 
-                        help="Language code for transcripts (default: vi)")
+                        help="download_subtitle_folder")
+    parser.add_argument("--index", 
+                        default="1", 
+                        help="phrase index")
     
     # Parse arguments
     args = parser.parse_args()
 
     # Call main with parsed arguments
-    main(args.name_file, args.downloaded, args.language,args.download_subtitle_folder)
+    main(args.name_file, args.downloaded, args.language,args.download_subtitle_folder,args.index)
