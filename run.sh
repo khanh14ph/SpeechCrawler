@@ -30,12 +30,6 @@ else
     echo "Directory $DATABASE/downloaded_subtitle' already exists."
 fi
 
-if [ ! -d "crawled" ]; then
-    mkdir -p crawled
-    echo "Directory 'crawled' created successfully."
-else
-    echo "Directory 'crawled' already exists."
-fi
 
 if [ ! -d $DATABASE/downloaded_audio/$LANGUAGE ]; then
     mkdir -p $DATABASE/downloaded_audio/$LANGUAGE
@@ -53,9 +47,6 @@ fi
 
 # Define language as a variable
 
-
-# Create the output directory if it doesn't exist
-mkdir -p ${BASE_DIR}/crawled/${LANGUAGE}
 
 # Loop from 1 to 21
 for i in $(seq 1 21); do
