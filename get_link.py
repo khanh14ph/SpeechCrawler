@@ -61,11 +61,11 @@ def get_url(v, name_file, downloaded_file, language,download_subtitle_folder,ind
                             d["duration"]=snip.duration
                             sub_dur+= snip.duration
                             meta_lst.append(d)
-                        
+                        video_dur=e.snippets[-1].start+e.snippets[-1].duration
 
-                        if len(e) > 10:
+                        if len(e) > 10 and sub_dur > video_dur*0.7:
                             meta_lst_all.append(meta_lst)
-                            duration_lst.append(e.snippets[-1].start+e.snippets[-1].duration)
+                            duration_lst.append()
 
                             match_all_real.append(u)
                             sub_duration_lst.append(sub_dur)
