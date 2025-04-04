@@ -16,6 +16,7 @@ Put the keyword in name_lst folder, as I put
 
 ```
 cd SpeechCrawler
+pip intall -r requirements.txt
 bash run.sh
 ```
 ##
