@@ -9,9 +9,13 @@ Put the cookies.txt file in the same folder as run.sh
 
 # In run.sh file
 
-Change BASE_DIR, DATABASE_DIR, LANGUGAE as you want
+Change BASE_DIR, DATABASE_DIR, LANGUGAE as you want in run.sh 
+# Write keywords
 Put the keyword in name_lst folder, as I put
+# RUN
+
 ```
+cd SpeechCrawler
 bash run.sh
 ```
 ##
