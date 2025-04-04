@@ -7,7 +7,9 @@ Some videos are age restricted, so this module won't be able to access those vid
 Once you have that, you can use the following to access age-restricted videos' captions like so.
 Put the cookies.txt file in the same folder as run.sh
 
-Change the Language in run.sh to the language you want to download. 
+# In run.sh file
+
+Change BASE_DIR, DATABASE_DIR, LANGUGAE as you want
 Put the keyword in name_lst folder, as I put
 ```
 bash run.sh

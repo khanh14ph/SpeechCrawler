@@ -6,7 +6,9 @@ import argparse
 from youtube_transcript_api import YouTubeTranscriptApi
 from multiprocessing import Process
 import json
-def get_url(v, name_file, downloaded_file, language,download_subtitle_folder,index):
+import glob
+DUR_RATIO=0.7
+def get_url(v, name_file, downloaded_file, language,download_folder,index):
     ytt_api = YouTubeTranscriptApi(cookie_path='cookies.txt')
     with open(f"links/link_list{v}.txt", "w") as f:
         pass
@@ -21,10 +23,9 @@ def get_url(v, name_file, downloaded_file, language,download_subtitle_folder,ind
     regex = r"(?<=watch\?v=)[\w]+(?=\")"
     
     # Read downloaded videos from the specified file
-    with open(downloaded_file, "r") as f:
-        all_lst = f.readlines()
-        all_lst = [i.strip().split()[-1] for i in all_lst]
-    
+    downloaded_audio=glob.glob(f"{downloaded_file}/downloaded_audio/*")
+    downloaded_subtitle=set(glob.glob(f"{downloaded_file}/downloaded_subtile/*"))
+    download_id=[idx for i in downloaded_audio if idx in downloaded_subtile]
     for j in tqdm.tqdm(lst):
         match_all = []
         for i in range(0, 20):  # search first n pages
@@ -44,7 +45,7 @@ def get_url(v, name_file, downloaded_file, language,download_subtitle_folder,ind
         sub_duration_lst = []
         meta_lst_all=[]
         for u in match_all:
-            if u not in all_lst:
+            if u not in download_id:
                     
                     transcript_list = ytt_api.list(u)
                     if language in transcript_list._manually_created_transcripts:
@@ -63,33 +64,34 @@ def get_url(v, name_file, downloaded_file, language,download_subtitle_folder,ind
                             meta_lst.append(d)
                         video_dur=e.snippets[-1].start+e.snippets[-1].duration
 
-                        if len(e) > 10 and sub_dur > video_dur*0.7:
+                        if len(e) > 10 and sub_dur > video_dur*DUR_RATIO:
                             meta_lst_all.append(meta_lst)
-                            duration_lst.append()
+                            duration_lst.append(video_dur)
 
                             match_all_real.append(u)
                             sub_duration_lst.append(sub_dur)
                         else:
                             pass
-
+            else:
+                print("already exist:",u)
 
 
         for t, dur, sub_dur,meta_data in zip(match_all_real, duration_lst, sub_duration_lst,meta_lst_all):
-            if t in all_lst:
-                print(t)
-            if t not in all_lst:
-                # all_lst.append(t)
+            if t in download_id:
+                print("already exist:",t)
+            if t not in download_id:
+                download_id.append(t)
                 link = f"https://www.youtube.com/watch?v={t}"
                 with open(f"links/link_list{v}.txt", "a") as f:
                     f.write(f"{link}\n")
-                with open(f"{download_subtitle_folder}/{language}/{t}.jsonl","w",encoding="utf-8") as f:
+                with open(f"{download_folder}/downloaded_subtitle/{language}/{t}.jsonl","w",encoding="utf-8") as f:
                     final_dict={"phrase_index":index,"id":t,"subtitles":meta_data}
                     json.dump(final_dict, f, indent=4,ensure_ascii=False)
 
-def main(name_file, downloaded_file, language,download_subtitle_folder,index):
+def main(name_file, downloaded_file, language,download_folder,index):
     processes = []
     for i in range(6):
-        p = Process(target=get_url, args=(i, name_file, downloaded_file, language,download_subtitle_folder,index))
+        p = Process(target=get_url, args=(i, name_file, downloaded_file, language,download_folder,index))
         p.start()
         processes.append(p)
 
@@ -108,9 +110,9 @@ if __name__ == "__main__":
     parser.add_argument("--language", 
                         default="vi", 
                         help="Language code for transcripts (default: vi)")
-    parser.add_argument("--download_subtitle_folder", 
+    parser.add_argument("--download_folder", 
                         default="../downloaded_subtitle", 
-                        help="download_subtitle_folder")
+                        help="download_folder")
     parser.add_argument("--index", 
                         default="1", 
                         help="phrase index")
@@ -119,4 +121,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Call main with parsed arguments
-    main(args.name_file, args.downloaded, args.language,args.download_subtitle_folder,args.index)
+    main(args.name_file, args.downloaded, args.language,args.download_folder,args.index)
