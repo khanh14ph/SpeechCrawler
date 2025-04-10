@@ -1,9 +1,10 @@
 #!/bin/bash
 set -e
 # Base directory
-BASE_DIR="/Users/khanh/dev/crawler/SpeechCrawler"
+BASE_DIR="/home4/khanhnd/youtube_crawler/SpeechCrawler"
 LANGUAGE="vi"
-DATABASE="/Users/khanh/dev/crawler/database"
+NAME_LST_FOLDER="/home4/khanhnd/youtube_crawler/keywords/vi"
+DATABASE="/home3/khanhnd/database"
 if [ ! -d $DATABASE ]; then
     mkdir -p $DATABASE
     echo "Directory $DATABASE created successfully."
@@ -53,7 +54,7 @@ for i in $(seq 1 21); do
   echo "Processing file ${i}..."
   
   # Run the get_link.py script
-  python ${BASE_DIR}/get_link.py ${BASE_DIR}/name_lst/${i}.txt --language ${LANGUAGE} --download_folder $DATABASE --index ${i}
+  python ${BASE_DIR}/get_link.py ${NAME_LST_FOLDER}/${i}.txt --language ${LANGUAGE} --download_folder $DATABASE --index ${i}
   
   # Concatenate the resulting files
   cat links/link_list0.txt links/link_list1.txt links/link_list2.txt links/link_list3.txt links/link_list4.txt links/link_list5.txt > ${BASE_DIR}/urls.txt
