@@ -1,10 +1,7 @@
 #!/bin/bash
 set -e
 # Base directory
-BASE_DIR="/Users/khanh/dev/crawler/SpeechCrawler"
-LANGUAGE="vi"
-NAME_LST_FOLDER="/Users/khanh/dev/crawler/keywords/vi"
-DATABASE="/Users/khanh/dev/crawler/database"
+source ./.env
 if [ ! -d $DATABASE ]; then
     mkdir -p $DATABASE
     echo "Directory $DATABASE created successfully."
@@ -37,7 +34,7 @@ fi
 
 
 # Loop from 1 to 21
-for i in $(seq 16 21); do
+for i in $(seq 1 21); do
   echo "Processing file ${i}..."
   
   # Run the get_link.py script

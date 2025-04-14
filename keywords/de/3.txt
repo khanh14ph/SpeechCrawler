@@ -1,0 +1,50 @@
+Blutkrankheiten
+Erkrankungen der blutbildenden Organe
+Immunerkrankungen
+Hämatologische Störungen
+Anämien
+Gerinnungsstörungen
+Leukozytäre Erkrankungen
+Thrombozytopathien
+Immundefekte
+Autoimmunerkrankungen
+Lymphatische Erkrankungen
+Myelodysplastische Syndrome
+Hämoglobinopathien
+Knochenmarkerkrankungen
+Hämatopoetische Störungen
+Erythrozytäre Erkrankungen
+Immundefizienzen
+Splenische Erkrankungen
+Lymphadenopathien
+Koagulopathien
+Hämophilien
+Thrombozytopenien
+Leukozytosen
+Leukopenien
+Polyzythämien
+Lymphoproliferative Störungen
+Myeloproliferative Störungen
+Eisenmangelanämie
+Megaloblastäre Anämien
+Hämolytische Anämien
+Aplastische Anämien
+Neutropenien
+Agranulozytose
+Thrombozytosen
+Purpura
+Hämorrhagische Diathesen
+Komplementdefekte
+Antikörpermangelerkrankungen
+Hypersensitivitätsreaktionen
+Immunregulationsstörungen
+Lymphadenitis
+Splenomegalie
+Milzerkrankungen
+Thymische Erkrankungen
+Knochenmarksuppression
+Panzytopenie
+Polyklonale Gammopathien
+Monoklonale Gammopathien
+Hämochromatose
+Hämosiderose

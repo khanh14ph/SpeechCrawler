@@ -21,7 +21,7 @@ for i in subtitle_lst:
     d=json.load(open(f"{folder_subtitle}/{i}"))
     if d["language"]==language and d["id"] not in audio_lst and d["id"] not in attempted_to_download:
         lst.append(i[:-6])
-print(len(lst))
+print("need to download: ",len(lst))
 with open("temp_url.txt","w",encoding="utf-8") as f:
     for i in lst:
         f.write(f"https://www.youtube.com/watch?v={i}\n")
