@@ -23,15 +23,18 @@ DATABASE="/Users/khanh/dev/crawler/database"
 
 cái LANGUAGE kia thì search gu gồ ngôn ngữ + iso 2 char là ra
 
-#Second step:
+# Second step:
 python mkdir_keywords.py
 lệnh này để tạo file còn ghi keywords/query vào thôi
 
-#Third step:
-bash get_metadata.sh
+# Third step:
+```
+bash get_metadata.sh`
+```
 Đại khái thì nó sẽ đi lấy toàn bộ meta của vid rồi lưu vào folder. Cái này chưa support continue download dc nên mọi người cố gắng ko interupt cái lệnh này. Tại đằng nào nó chạy cũng nhanh, chỉ lấy metadata.
-
+```
 bash get_audio.sh
+```
 Giờ mình có đống meta data rồi, mình sẽ đi download audio. Cái này sẽ mất thời gian hơn, nhưng mà bạn có thể tắt giữa chừng rồi download tiếp được 
 
 ```
