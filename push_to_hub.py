@@ -12,8 +12,9 @@ load_dotenv()
 
 # Now you can access them with os.environ
 DATABASE = os.environ.get('DATABASE')
-# LANGUAGE = os.environ.get('LANGUAGE')
-LANGUAGE="vi"
+TOKEN = os.environ.get('TOKEN')
+LANGUAGE = os.environ.get('LANGUAGE')
+# LANGUAGE="vi"
 all_jsonl_file=glob.glob(f"{DATABASE}/downloaded_subtitle/*.jsonl")
 res=[]
 import json
@@ -42,7 +43,7 @@ for wav_file in wav_files:
         repo_id="leduckhai/MultiMed-WS",
         repo_type="dataset",  # or "model" if it's a model repo
         commit_message=f"Upload {filename}",
-        token="***REMOVED***"
+        token=TOKEN
     )
     
 print("All WAV files uploaded successfully!")
