@@ -1,0 +1,50 @@
+Erkrankungen des Nervensystems
+Neurologische Erkrankungen
+Neuropathien
+Enzephalopathien
+Myelopathien
+Epilepsie
+Multiple Sklerose
+Parkinson-Krankheit
+Alzheimer-Krankheit
+Amyotrophe Lateralsklerose
+Meningitis
+Enzephalitis
+Hirnabszess
+Migräne
+Spannungskopfschmerz
+Cluster-Kopfschmerz
+Trigeminusneuralgie
+Fazialisparese
+Polyneuropathie
+Mononeuropathie
+Myasthenia gravis
+Myopathien
+Muskeldystrophien
+Rückenmarkserkrankungen
+Bandscheibenvorfall
+Spinalkanalstenose
+Syringomyelie
+Hydrozephalus
+Hirnödem
+Hirninfarkt
+Hirnblutung
+Subarachnoidalblutung
+Hirntrauma
+Rückenmarksverletzung
+Guillain-Barré-Syndrom
+Huntington-Krankheit
+Dystonie
+Ataxie
+Tremor
+Dysarthrie
+Aphasie
+Dysphagie
+Synkope
+Bewusstseinsstörungen
+Koma
+Narkolepsie
+Restless-Legs-Syndrom
+Neurodegenerative Erkrankungen
+Demyelinisierende Erkrankungen
+Neuromuskuläre Erkrankungen

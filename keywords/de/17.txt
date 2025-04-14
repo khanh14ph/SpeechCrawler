@@ -1,0 +1,50 @@
+Angeborene Fehlbildungen
+Angeborene Deformitäten
+Chromosomenanomalien
+Neuralrohrdefekte
+Spina bifida
+Anenzephalie
+Enzephalozele
+Hydrozephalus
+Mikrozephalie
+Angeborene Herzfehler
+Ventrikelseptumdefekt
+Vorhofseptumdefekt
+Fallot-Tetralogie
+Transposition der großen Arterien
+Lippen-Kiefer-Gaumenspalte
+Gaumenspalte
+Lippenspalte
+Angeborene Gliedmaßenfehlbildungen
+Klumpfuß
+Hüftdysplasie
+Polydaktylie
+Syndaktylie
+Trisomie 21
+Down-Syndrom
+Trisomie 18
+Edwards-Syndrom
+Trisomie 13
+Patau-Syndrom
+Turner-Syndrom
+Klinefelter-Syndrom
+Prader-Willi-Syndrom
+Angelman-Syndrom
+Marfan-Syndrom
+Ehlers-Danlos-Syndrom
+Osteogenesis imperfecta
+Muskeldystrophie Duchenne
+Zystische Fibrose
+Phenylketonurie
+Galaktosämie
+Angeborene Hypothyreose
+Adrenogenitales Syndrom
+Angeborene Immundefekte
+DiGeorge-Syndrom
+Angeborene Nierenfehlbildungen
+Nierenagenesie
+Polyzystische Nierenerkrankung
+Angeborene Zwerchfellhernie
+Ösophagusatresie
+Analatresie
+Gastroschisis
