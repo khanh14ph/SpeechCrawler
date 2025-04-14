@@ -25,6 +25,7 @@ cái LANGUAGE kia thì search gu gồ ngôn ngữ + iso 2 char là ra
 
 # Second step:
 python mkdir_keywords.py
+
 lệnh này để tạo file còn ghi keywords/query vào thôi
 
 # Third step:
