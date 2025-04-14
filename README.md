@@ -15,12 +15,12 @@ Put the cookies.txt file in the same folder as run.sh
 
 # First step:
 Tạo file .env:
-
+```
 LANGUAGE="de"
 BASE_DIR="/Users/khanh/dev/crawler/SpeechCrawler"
 NAME_LST_FOLDER=/Users/khanh/dev/crawler/SpeechCrawler/keywords/${LANGUAGE}
 DATABASE="/Users/khanh/dev/crawler/database"
-
+```
 cái LANGUAGE kia thì search gu gồ ngôn ngữ + iso 2 char là ra
 
 # Second step:
