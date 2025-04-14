@@ -20,6 +20,7 @@ LANGUAGE="de"
 BASE_DIR="/Users/khanh/dev/crawler/SpeechCrawler"
 NAME_LST_FOLDER=/Users/khanh/dev/crawler/SpeechCrawler/keywords/${LANGUAGE}
 DATABASE="/Users/khanh/dev/crawler/database"
+TOKEN="hf********"
 ```
 cái LANGUAGE kia thì search gu gồ ngôn ngữ + iso 2 char là ra
 
@@ -38,13 +39,10 @@ bash get_audio.sh
 ```
 Giờ mình có đống meta data rồi, mình sẽ đi download audio. Cái này sẽ mất thời gian hơn, nhưng mà bạn có thể tắt giữa chừng rồi download tiếp được 
 
-```
-cd SpeechCrawler
-pip intall -r requirements.txt
-bash run.sh
-```
-##
-```
+# Forth step:
+
+python push_to_hub.py
+đẩy lên huggingface, đọc qua nhé
 ## Citation
 
 @article{lakomkin2018kt,
