@@ -14,7 +14,7 @@ def replace_print(text):
     sys.stdout.flush()
 
 def main(name_file, downloaded_file, language, download_folder, index):
-    ytt_api = YouTubeTranscriptApi(cookie_path='cookies.txt')
+    ytt_api = YouTubeTranscriptApi()
     
     # Create links directory if it doesn't exist
     os.makedirs("links", exist_ok=True)
