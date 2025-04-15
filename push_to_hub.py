@@ -15,7 +15,15 @@ load_dotenv()
 
 # Access environment variables
 DATABASE = os.environ.get('DATABASE')
-TOKEN = os.environ.get('TOKEN')
+import glob
+import sys
+
+# Get filename from command line arguments
+if len(sys.argv) > 1:
+    TOKEN = sys.argv[1]
+else:
+    print("Error: Please provide a filename as a command line argument")
+    sys.exit(1)
 LANGUAGE = "vi"
 
 # Find all relevant audio files based on language
