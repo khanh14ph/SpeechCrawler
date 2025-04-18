@@ -20,3 +20,16 @@ def get_title(video_id):
 
     return video_title
    
+if __name__ == "__main__":
+    import json
+    import glob
+    from tqdm import tqdm
+    lst=glob.glob("/Users/khanh/dev/crawler/database/downloaded_subtitle/*")
+    for i in tqdm(lst):
+        metadata=json.load(open(i))
+        if metadata["language"] == "vi":
+            if "title" not in metadata:
+                metadata["title"] = get_title(metadata["id"])
+            print(metadata["subtitles"])
+            with open(i, "w", encoding="utf-8") as f:
+                json.dump(metadata, f, indent=4,ensure_ascii=False)

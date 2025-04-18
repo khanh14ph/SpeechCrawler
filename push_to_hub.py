@@ -1,110 +1,107 @@
-from huggingface_hub import HfApi
+from datasets import Dataset, Audio
 import os
 import glob
 import json
-import numpy as np
-import pandas as pd
-import pyarrow as pa
-import pyarrow.parquet as pq
 from tqdm import tqdm
 from dotenv import load_dotenv
+import sys
+import pandas as pd
+import numpy as np
+import librosa
 import soundfile as sf
+from huggingface_hub import HfApi
+import shutil
 
 # Load environment variables from .env file
 load_dotenv()
 
 # Access environment variables
 DATABASE = os.environ.get('DATABASE')
-import glob
-import sys
 
-# Get filename from command line arguments
+# Get token and folder from command line arguments
 if len(sys.argv) > 1:
     TOKEN = sys.argv[1]
 else:
-    print("Error: Please provide a filename as a command line argument")
+    print("Error: Please provide a Hugging Face token and folder path as command line arguments")
     sys.exit(1)
-LANGUAGE = "vi"
+    
+LANGUAGE = "de"
+CHUNK_SIZE = 100  # Adjust based on your memory constraints
 
 # Find all relevant audio files based on language
 all_jsonl_file = glob.glob(f"{DATABASE}/downloaded_subtitle/*.jsonl")
-audio_metadata = []
+print(f"Finding {LANGUAGE} audio files with subtitles...")
 
-for i in all_jsonl_file:
+audio_paths = []
+metadata = []
+for i in tqdm(all_jsonl_file):
     with open(i) as f:
         info = json.load(f)
     if info["language"] == LANGUAGE:
         audio_path = f"{DATABASE}/downloaded_audio/{info['id']}.wav"
         if os.path.exists(audio_path):
-            # Add metadata and file path to our list
-            metadata = {
-                "id": info['id'],
-                "language": info["language"],
-                "audio_path": audio_path,
-                # Add any other metadata from the info dict
-            }
-            audio_metadata.append(metadata)
+            metadata.append(info)
+            audio_paths.append(audio_path)
 
-# Login to Hugging Face
+print(f"Found {len(audio_paths)} audio files for language {LANGUAGE}")
+
+# Process and upload in chunks
+output_folder = f"{DATABASE}/temp"
+os.makedirs(output_folder, exist_ok=True)
+
+# Initialize Hugging Face API
 api = HfApi()
-repo_id = "leduckhai/MultiMed-WS"
-repo_type = "dataset"
+# Process in chunks
+for chunk_idx in range(0, len(audio_paths), CHUNK_SIZE):
+    print(f"Processing chunk {chunk_idx//CHUNK_SIZE + 1}/{(len(audio_paths)-1)//CHUNK_SIZE + 1}")
+    
+    # Get chunk of data
+    chunk_paths = audio_paths[chunk_idx:chunk_idx + CHUNK_SIZE]
+    chunk_metadata = metadata[chunk_idx:chunk_idx + CHUNK_SIZE]
+    
+    # Load audio files for this chunk
+    audio_arrays = []
+    for path in tqdm(chunk_paths, desc="Loading audio files"):
+        try:
+            audio, sr = librosa.load(path, sr=None)
+            audio_arrays.append(audio)
+        except Exception as e:
+            print(f"Error loading {path}: {e}")
+            # Add a placeholder or skip this file
+            audio_arrays.append(np.zeros(1000))  # Small placeholder array
+    
+    # Create dataset for this chunk
+    data_dict = {
+        "audio": audio_arrays,
+        "metadata": chunk_metadata,
+    }
+    
+    chunk_dataset = Dataset.from_dict(data_dict)
+    
+    # Clean up previous parquet files
+    for old_file in glob.glob(f"{output_folder}/*.parquet"):
+        os.remove(old_file)
+    
+    # Save this chunk to parquet
+    chunk_file = f"{output_folder}/data_chunk_{chunk_idx//CHUNK_SIZE}.parquet"
+    chunk_dataset.to_parquet(chunk_file)
+    
+    # Upload this chunk to Hugging Face
+    chunk_folder_name = f"chunk_{chunk_idx//CHUNK_SIZE}"
+    print(f"Uploading chunk {chunk_idx//CHUNK_SIZE + 1} to Hugging Face...")
+    
+    api.upload_folder(
+        folder_path=output_folder,
+        repo_id="leduckhai/MultiMed-WS",  # Replace with your actual repo
+        repo_type="dataset",
+        path_in_repo=f"{LANGUAGE}/{chunk_folder_name}",token=TOKEN,
+    )
+    
+    print(f"Chunk {chunk_idx//CHUNK_SIZE + 1} uploaded successfully")
+    
+    # Free up memory
+    del chunk_dataset
+    del audio_arrays
+    del data_dict
 
-# Process files in batches of 500
-batch_size = 500
-total_files = len(audio_metadata)
-num_batches = (total_files + batch_size - 1) // batch_size
-
-for batch_idx in range(num_batches):
-    start_idx = batch_idx * batch_size
-    end_idx = min((batch_idx + 1) * batch_size, total_files)
-    batch_metadata = audio_metadata[start_idx:end_idx]
-    
-    # Create a list to store audio data and metadata
-    batch_data = []
-    
-    for item in tqdm(batch_metadata, desc=f"Processing batch {batch_idx+1}/{num_batches}"):
-        # Read audio file
-        audio_data, sample_rate = sf.read(item["audio_path"])
-        
-        # Convert to bytes for storage in Parquet
-        audio_bytes = audio_data.tobytes()
-        
-        # Create entry with audio data and metadata
-        entry = {
-            "id": item["id"],
-            "language": item["language"],
-            "audio_data": audio_bytes,
-            "sample_rate": sample_rate,
-            "original_path": item["audio_path"],
-            # Add any other metadata you want to include
-        }
-        batch_data.append(entry)
-    
-    # Create DataFrame
-    df = pd.DataFrame(batch_data)
-    
-    # Create Parquet file
-    parquet_filename = f"audio_batch_{batch_idx+1}_{LANGUAGE}.parquet"
-    df.to_parquet(parquet_filename)
-    
-    # Upload to Hugging Face
-    path_in_repo = f"audio_data/{LANGUAGE}/{parquet_filename}"
-    
-    try:
-        api.upload_file(
-            path_or_fileobj=parquet_filename,
-            path_in_repo=path_in_repo,
-            repo_id=repo_id,
-            repo_type=repo_type,
-            commit_message=f"Upload batch {batch_idx+1} of {LANGUAGE} audio files",
-            token=TOKEN
-        )
-        print(f"Successfully uploaded {parquet_filename} with {len(batch_data)} audio files")
-    except Exception as e:
-        print(f"Error uploading {parquet_filename}: {e}")
-    
-    # Optionally remove the local parquet file after upload
-    os.remove(parquet_filename)
-
-print(f"Upload complete: {total_files} files processed in {num_batches} batches.")
+print("All chunks processed and uploaded successfully")
