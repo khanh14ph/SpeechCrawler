@@ -18,7 +18,7 @@ else:
     print("Error: Please provide a filename as a command line argument")
     sys.exit(1)
 api.delete_files(
-            delete_patterns="data/*",
+            delete_patterns="de/*",
             repo_id=repo_id,
             repo_type=repo_type,
             token=TOKEN

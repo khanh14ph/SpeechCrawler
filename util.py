@@ -26,10 +26,14 @@ if __name__ == "__main__":
     from tqdm import tqdm
     lst=glob.glob("/Users/khanh/dev/crawler/database/downloaded_subtitle/*")
     for i in tqdm(lst):
+        print(i)
         metadata=json.load(open(i))
-        if metadata["language"] == "vi":
+        if metadata["language"] == "de":
             if "title" not in metadata:
                 metadata["title"] = get_title(metadata["id"])
-            print(metadata["subtitles"])
+            for j in metadata["subtitles"]:
+                j["text"] = j["text"].replace("'","").replace("\"","").replace("’","").replace("“","").replace("”","").replace("‘","")
             with open(i, "w", encoding="utf-8") as f:
                 json.dump(metadata, f, indent=4,ensure_ascii=False)
+
+
