@@ -32,7 +32,7 @@ BASE_DIR="/Users/khanh/dev/crawler/SpeechCrawler"
 NAME_LST_FOLDER=/Users/khanh/dev/crawler/SpeechCrawler/keywords/${LANGUAGE}
 DATABASE="/Users/khanh/dev/crawler/database"
 ```
-Copy
+
 - Replace `LANGUAGE` with the desired language code (e.g., "de" for German). You can find supported language codes at [SearchAPI Documentation](https://www.searchapi.io/docs/parameters/youtube-transcripts/lang).
 - Update the paths (`BASE_DIR`, `NAME_LST_FOLDER`, `DATABASE`) to match your local setup.
 
