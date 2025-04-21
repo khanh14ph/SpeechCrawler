@@ -62,7 +62,7 @@ bash get_metadata.sh
 Once metadata is collected, download the audio files using:
 bash get_audio.sh
 
-Copy
+
 - This step takes longer as it downloads audio content.
 - **Note**: You can interrupt this process and resume downloading later.
 
@@ -72,7 +72,7 @@ Copy
 Push the collected data to a Hugging Face repository in Parquet format using:
 python push_to_hub.py <hf_token>
 
-Copy
+
 - Replace `<hf_token>` with your Hugging Face API token.
 - This script supports resuming uploads, so you can stop and continue later if needed.
 
@@ -80,22 +80,24 @@ Copy
 
 ## Optional Steps
 - **Delete Local Data**: To delete all local data for a specific language, run:
+```
 python delete_local.py
+```
 
-Copy
 - **Delete Remote Data**: To delete data from a Hugging Face repository based on a pattern (useful for correcting upload errors), run:
+```
 python delete_remote.py <hf_token>
+```
 
-Copy
 - **Calculate Duration**: To check the total duration of crawled data, run:
+```
 python get_dur.py
-
-Copy
-
+```
 ---
 
 ## Loading the Dataset
 To load the dataset from Hugging Face for use in your projects, use the following Python code:
-```python
+```
 from datasets import load_dataset
 dataset = load_dataset("leduckhai/MultiMed-WS", data_dir="vi", verification_mode="no_checks", split="train")
+```
