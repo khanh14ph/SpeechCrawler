@@ -1,75 +1,98 @@
- Speech-Crawler: Automated Speech Recognition Dataset Construction from YouTube Videos
+# Speech-Crawler: Automatic Dataset Construction for Speech Recognition from YouTube Videos
 
-## Overview
-This tool automates the creation of speech recognition datasets by extracting audio and metadata from YouTube videos. Features include age-restricted content handling, Hugging Face integration, and progress tracking.
+This tool automates the process of building datasets for speech recognition by crawling audio and metadata from YouTube videos. Below are the detailed instructions to set up and run the crawler.
 
-## Prerequisites
-- Python 3.7+
-- yt-dlp
-- Hugging Face account (for dataset upload)
-- Cloudflare DNS (1.1.1.1) recommended for IP ban prevention
+---
 
-## Setup Guide
+## Important Notes
+- **Using Cookies**: If you use cookies to bypass age restrictions, be cautious. Excessive crawling with the same cookies may lead to a temporary ban of your YouTube account. It is recommended to avoid using cookies if possible. You can modify the `getlink.py` file and the `yt-dlp` script in `get_audio` to exclude the `--cookies cookies.txt` argument to reduce the risk of being banned.
+- **IP Ban Issues**: If you encounter continuous "video not available" errors during `get_metadata` or `get_audio` steps, it might be due to YouTube banning your IP. Enable Cloudflare Warp (1.1.1.1) to resolve this issue and continue crawling.
 
-### 1. Environment Configuration
-Create `.env` file with:
-LANGUAGE="de"  # ISO 639-1 code (see https://www.searchapi.io/docs/parameters/youtube-transcripts/lang)
-BASE_DIR="/path/to/SpeechCrawler"
-NAME_LST_FOLDER="${BASE_DIR}/keywords/${LANGUAGE}"
-DATABASE="/path/to/database"
+---
+
+## Cookie Authentication for Age-Restricted Videos
+Some videos on YouTube are age-restricted and cannot be accessed without authentication. To access these videos, you need to export cookies from a browser where you are logged in and have access to the desired video.
+
+### Steps to Export Cookies:
+1. Use a browser extension to export cookies:
+   - For Chrome/Edge: Use the [Cookie-Editor](https://chromewebstore.google.com/detail/cookie-editor/hlkenndednhfkekhgcdicdfddnkalmdm?hl=en) extension and select "Netscape" format during export.
+   - For Firefox: Use the [cookies.txt](https://addons.mozilla.org/en-US/firefox/addon/cookies-txt) extension.
+2. Save the exported cookies to a file named `cookies.txt`.
+3. Place the `cookies.txt` file in the same directory as `run.sh`.
+
+---
+
+## Step-by-Step Guide to Running the Crawler
+
+### Step 1: Set Up Environment Variables
+Create a `.env` file in the project directory with the following content:
+LANGUAGE="de"
+BASE_DIR="/Users/khanh/dev/crawler/SpeechCrawler"
+NAME_LST_FOLDER=/Users/khanh/dev/crawler/SpeechCrawler/keywords/${LANGUAGE}
+DATABASE="/Users/khanh/dev/crawler/database"
 
 Copy
+- Replace `LANGUAGE` with the desired language code (e.g., "de" for German). You can find supported language codes at [SearchAPI Documentation](https://www.searchapi.io/docs/parameters/youtube-transcripts/lang).
+- Update the paths (`BASE_DIR`, `NAME_LST_FOLDER`, `DATABASE`) to match your local setup.
 
-### 2. Keyword Initialization
+---
+
+### Step 2: Create Keyword Files
+Run the following command to create a folder structure for storing keywords or search queries:
 python mkdir_keywords.py
 
 Copy
-Populate generated files in `keywords/${LANGUAGE}` with your search queries.
+After running this command, manually add your keywords or search queries into the folder specified by `NAME_LST_FOLDER` in your `.env` file.
 
-## Core Workflow
+---
 
-### Metadata Collection
+### Step 3: Crawl Metadata and Audio
+#### 3.1. Crawl Metadata
+Run the following command to fetch metadata for videos based on your keywords:
 bash get_metadata.sh
 
 Copy
-*Important: Do not interrupt this process. Average execution time: 2-3 minutes per 100 videos.*
+- This step collects metadata for videos and saves it to a folder.
+- **Note**: This process does not support resuming if interrupted, so avoid stopping the script. Fortunately, it runs quickly as it only fetches metadata.
 
-### Audio Download
+#### 3.2. Download Audio
+Once metadata is collected, download the audio files using:
 bash get_audio.sh
 
 Copy
-Supports resumable downloads. Estimated throughput: 50-100 videos/hour depending on audio length.
+- This step takes longer as it downloads audio content.
+- **Note**: You can interrupt this process and resume downloading later.
 
-## Authentication Handling
-For age-restricted content:
+---
 
-1. Install [Cookie-Editor](https://chromewebstore.google.com/detail/cookie-editor) (Chrome/Edge) or [cookies.txt](https://addons.mozilla.org/en-US/firefox/addon/cookies-txt) (Firefox)
-2. Export cookies in Netscape format as `cookies.txt`
-3. Place in project root
-
-*Warning: Excessive requests from same account may trigger temporary bans. Use sparingly.*
-
-## Data Management
-
-### Hugging Face Integration
-python push_to_hub.py <your_hf_token>
+### Step 4: Upload Data to Hugging Face
+Push the collected data to a Hugging Face repository in Parquet format using:
+python push_to_hub.py <hf_token>
 
 Copy
-Features incremental upload with 90% resumption capability. Typical upload speed: 2-4GB/hour.
+- Replace `<hf_token>` with your Hugging Face API token.
+- This script supports resuming uploads, so you can stop and continue later if needed.
 
-### Maintenance Utilities
-python delete_local.py  # Local data cleanup
-python delete_remote.py <hf_token>  # Remote dataset management
-python get_dur.py  # Duration statistics
+---
+
+## Optional Steps
+- **Delete Local Data**: To delete all local data for a specific language, run:
+python delete_local.py
+
+Copy
+- **Delete Remote Data**: To delete data from a Hugging Face repository based on a pattern (useful for correcting upload errors), run:
+python delete_remote.py <hf_token>
+
+Copy
+- **Calculate Duration**: To check the total duration of crawled data, run:
+python get_dur.py
 
 Copy
 
-## Dataset Access
+---
+
+## Loading the Dataset
+To load the dataset from Hugging Face for use in your projects, use the following Python code:
 ```python
 from datasets import load_dataset
-dataset = load_dataset(
-    "leduckhai/MultiMed-WS",
-    data_dir="vi",
-    verification_mode="no_checks",
-    split="train"
-)
+dataset = load_dataset("leduckhai/MultiMed-WS", data_dir="vi", verification_mode="no_checks", split="train")
