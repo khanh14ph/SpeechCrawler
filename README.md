@@ -26,11 +26,12 @@ Some videos on YouTube are age-restricted and cannot be accessed without authent
 
 ### Step 1: Set Up Environment Variables
 Create a `.env` file in the project directory with the following content:
+```
 LANGUAGE="de"
 BASE_DIR="/Users/khanh/dev/crawler/SpeechCrawler"
 NAME_LST_FOLDER=/Users/khanh/dev/crawler/SpeechCrawler/keywords/${LANGUAGE}
 DATABASE="/Users/khanh/dev/crawler/database"
-
+```
 Copy
 - Replace `LANGUAGE` with the desired language code (e.g., "de" for German). You can find supported language codes at [SearchAPI Documentation](https://www.searchapi.io/docs/parameters/youtube-transcripts/lang).
 - Update the paths (`BASE_DIR`, `NAME_LST_FOLDER`, `DATABASE`) to match your local setup.
