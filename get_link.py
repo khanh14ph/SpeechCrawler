@@ -63,7 +63,8 @@ def main(name_file, downloaded_file, language, download_folder, index):
             if u not in downloaded_subtitle:
                 try:
                     transcript_list = ytt_api.list(u)
-                    if language in transcript_list._manually_created_transcripts:
+                    manually_created_transcripts=transcript_list._manually_created_transcripts
+                    if language in manually_created_transcripts:
                         sub_dur = 0
                         # Use the language parameter passed to the function
                         transcript = transcript_list.find_manually_created_transcript([language])

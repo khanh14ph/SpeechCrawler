@@ -116,7 +116,10 @@ for chunk_idx in range(num_chunks):
     # Remove temporary data to free memory
     del audio_data, subtitles, titles, phrases, ids, languages
     gc.collect()
-    
+    import glob
+    remove_lst=glob.glob(f"{OUTPUT_DIR}/*.parquet")
+    for i in remove_lst:
+        os.remove(i)
     # Save as parquet
     chunk_file = f"{OUTPUT_DIR}/chunk_{chunk_idx}.parquet"
     chunk_dataset.to_parquet(chunk_file)
