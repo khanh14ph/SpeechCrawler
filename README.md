@@ -40,9 +40,10 @@ DATABASE="/Users/khanh/dev/crawler/database"
 
 ### Step 2: Create Keyword Files
 Run the following command to create a folder structure for storing keywords or search queries:
+```
 python mkdir_keywords.py
+```
 
-Copy
 After running this command, manually add your keywords or search queries into the folder specified by `NAME_LST_FOLDER` in your `.env` file.
 
 ---
@@ -50,9 +51,10 @@ After running this command, manually add your keywords or search queries into th
 ### Step 3: Crawl Metadata and Audio
 #### 3.1. Crawl Metadata
 Run the following command to fetch metadata for videos based on your keywords:
+```
 bash get_metadata.sh
+```
 
-Copy
 - This step collects metadata for videos and saves it to a folder.
 - **Note**: This process does not support resuming if interrupted, so avoid stopping the script. Fortunately, it runs quickly as it only fetches metadata.
 
