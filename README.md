@@ -18,7 +18,7 @@ Some videos on YouTube are age-restricted and cannot be accessed without authent
    - For Chrome/Edge: Use the [Cookie-Editor](https://chromewebstore.google.com/detail/cookie-editor/hlkenndednhfkekhgcdicdfddnkalmdm?hl=en) extension and select "Netscape" format during export.
    - For Firefox: Use the [cookies.txt](https://addons.mozilla.org/en-US/firefox/addon/cookies-txt) extension.
 2. Save the exported cookies to a file named `cookies.txt`.
-3. Place the `cookies.txt` file in the same directory as `run.sh`.
+3. Place the `cookies.txt` file in the same directory as `get_metadata.sh`.
 
 ---
 
