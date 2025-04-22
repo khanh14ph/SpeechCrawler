@@ -105,4 +105,4 @@ dataset = load_dataset("leduckhai/MultiMed-WS", data_dir="vi", verification_mode
 ##Future work
 
 Implement data preprocessing pipeline
-<img src="./asset/data-pipeline" width="300"/>
+<img src="./asset/data-pipeline.png" width="300"/>
