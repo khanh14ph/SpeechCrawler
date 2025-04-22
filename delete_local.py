@@ -18,7 +18,7 @@ load_dotenv()
 
 # Access environment variables
 DATABASE = os.environ.get('DATABASE')
-language="de"
+language="vi"
 metadata_lst=glob.glob(f"{DATABASE}/downloaded_subtitle/*.jsonl")
 for i in tqdm(metadata_lst):
     with open(i, 'r') as f:
@@ -31,5 +31,5 @@ for i in tqdm(metadata_lst):
             else:
                 print(f"File {audio_path} does not exist")
         else:
-            print(f"File {audio_path} does not exist")  
+            print(f"File does not exist")  
     

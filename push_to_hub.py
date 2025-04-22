@@ -25,7 +25,7 @@ else:
     print("Error: Please provide a Hugging Face token as command line argument")
     sys.exit(1)
 
-LANGUAGE = "vi"
+LANGUAGE = "ja"
 CHUNK_SIZE = 10  # Adjust based on your memory constraints
 REPO_ID = "leduckhai/MultiMed-WS"
 OUTPUT_DIR = f"{DATABASE}/{LANGUAGE}"
