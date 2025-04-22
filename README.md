@@ -101,3 +101,8 @@ To load the dataset from Hugging Face for use in your projects, use the followin
 from datasets import load_dataset
 dataset = load_dataset("leduckhai/MultiMed-WS", data_dir="vi", verification_mode="no_checks", split="train")
 ```
+
+##Future work
+
+Implement data preprocessing pipeline
+![Screenshot](./asset/data-pipeline.png)
