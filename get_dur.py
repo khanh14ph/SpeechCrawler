@@ -3,7 +3,7 @@ import json
 import os
 import librosa
 from tqdm import tqdm
-lan="ja"
+lan="zh-Hans"
 subtitle_lst=glob.glob("/Users/khanh/dev/crawler/database/downloaded_subtitle/*")
 audio_existed=[i[:-4] for i in os.listdir("/Users/khanh/dev/crawler/database/downloaded_audio/")]
 count=0

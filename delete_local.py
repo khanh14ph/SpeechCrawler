@@ -1,5 +1,4 @@
 import os
-from datasets import Dataset, Audio, Features, Value, Sequence
 import glob
 import json
 from tqdm import tqdm
@@ -18,7 +17,7 @@ load_dotenv()
 
 # Access environment variables
 DATABASE = os.environ.get('DATABASE')
-language="vi"
+language="zh-Hans"
 metadata_lst=glob.glob(f"{DATABASE}/downloaded_subtitle/*.jsonl")
 for i in tqdm(metadata_lst):
     with open(i, 'r') as f:

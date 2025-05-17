@@ -15,7 +15,7 @@ def replace_print(text):
 
 def main(name_file, downloaded_file, language, download_folder, index):
     ytt_api = YouTubeTranscriptApi()
-    
+    ytt_api_cookies = YouTubeTranscriptApi(cookie_path="cookies.txt")
     # Create links directory if it doesn't exist
     os.makedirs("links", exist_ok=True)
     
@@ -61,8 +61,10 @@ def main(name_file, downloaded_file, language, download_folder, index):
         
         for u in match_all:
             if u not in downloaded_subtitle:
-                try:
-                    transcript_list = ytt_api.list(u)
+                    try:
+                        transcript_list = ytt_api.list(u)
+                    except:
+                        transcript_list=ytt_api_cookies.list(u)
                     manually_created_transcripts=transcript_list._manually_created_transcripts
                     if language in manually_created_transcripts:
                         sub_dur = 0
@@ -85,9 +87,7 @@ def main(name_file, downloaded_file, language, download_folder, index):
                             duration_lst.append(video_dur)
                             match_all_real.append(u)
                             sub_duration_lst.append(sub_dur)
-                except Exception as e:
-                    print(f"Error processing video {u}: {e}")
-                    continue
+
             else:
                 replace_print("already exist: " + u)
 
