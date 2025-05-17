@@ -12,10 +12,16 @@ DUR_RATIO = 0.7
 def replace_print(text):
     sys.stdout.write('\r' + str(text))
     sys.stdout.flush()
-
+ytt_api = YouTubeTranscriptApi()
+ytt_api_cookies = YouTubeTranscriptApi(cookie_path="cookies.txt")
+def get_transcript_lst(u):
+    try:
+        transcript_list = ytt_api.list(u)
+    except:
+        transcript_list=ytt_api_cookies.list(u)
+    return transcript_list
 def main(name_file, downloaded_file, language, download_folder, index):
-    ytt_api = YouTubeTranscriptApi()
-    ytt_api_cookies = YouTubeTranscriptApi(cookie_path="cookies.txt")
+    
     # Create links directory if it doesn't exist
     os.makedirs("links", exist_ok=True)
     
@@ -61,17 +67,24 @@ def main(name_file, downloaded_file, language, download_folder, index):
         
         for u in match_all:
             if u not in downloaded_subtitle:
-                    try:
-                        transcript_list = ytt_api.list(u)
-                    except:
-                        transcript_list=ytt_api_cookies.list(u)
+                    transcript_list=get_transcript_lst(u)
                     manually_created_transcripts=transcript_list._manually_created_transcripts
                     if language in manually_created_transcripts:
                         sub_dur = 0
                         # Use the language parameter passed to the function
                         transcript = transcript_list.find_manually_created_transcript([language])
-                        e = transcript.fetch()
-                        
+                        for try_iter in range(5):
+                            try:
+                                e = transcript.fetch()
+                                break
+                            except:
+                                print(f"try fetch {u} {str(try_iter)} times ")
+                                transcript_list=get_transcript_lst(u)
+                                transcript = transcript_list.find_manually_created_transcript([language])
+                                pass
+                        else:
+                            print(f"VIDEO {u} has some problem, cannot fetch")
+                            continue
                         meta_lst = []
                         for snip in e.snippets:
                             d = dict()
@@ -89,7 +102,7 @@ def main(name_file, downloaded_file, language, download_folder, index):
                             sub_duration_lst.append(sub_dur)
 
             else:
-                replace_print("already exist: " + u)
+                print("already exist: " + u)
 
         for t, dur, sub_dur, meta_data in zip(match_all_real, duration_lst, sub_duration_lst, meta_lst_all):
             if t in downloaded_subtitle:

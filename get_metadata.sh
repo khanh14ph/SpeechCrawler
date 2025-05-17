@@ -34,7 +34,7 @@ fi
 
 
 # Loop from 1 to 21
-for i in $(seq 1 21); do
+for i in $(seq 18 21); do
   echo "Processing file ${i}..."
   
   # Run the get_link.py script
