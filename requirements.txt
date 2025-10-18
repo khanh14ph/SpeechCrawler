@@ -1,4 +1,8 @@
-termcolor
-yt-dlp
-numpy
-youtube_transcript_api
+# YouTube crawler requirements
+# Note: yt-dlp is loaded from local repo at /Users/khanh/dev/crawler/yt-dlp
+
+# If you want to install yt-dlp via pip instead:
+# yt-dlp>=2023.10.13
+
+# Required for audio processing
+ffmpeg-python>=0.2.0
