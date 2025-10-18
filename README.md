@@ -213,8 +213,7 @@ for url in urls:
 - Try different language codes in the `subtitleslangs` parameter
 
 **"yt-dlp module not found":**
-- Check that `/Users/khanh/dev/crawler/yt-dlp` exists
-- Or install yt-dlp via pip: `pip install yt-dlp`
+- Install yt-dlp via pip: `pip install yt-dlp`
 
 ## License
 
